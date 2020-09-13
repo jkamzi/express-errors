@@ -18,15 +18,11 @@ export type ErrorResponse = Readonly<{
   };
 }>;
 
-function isHttpError(err: ErrorType): err is HttpError {
-  if (err instanceof HttpError) {
-    return true;
-  }
-
-  return false;
+export function isHttpError(err: ErrorType): err is HttpError {
+  return (err as HttpError).reason !== undefined;
 }
 
-export function errorBody(err: HttpError): ErrorResponse {
+export function createErrorBody(err: HttpError): ErrorResponse {
   return {
     error: {
       message: err.message,
@@ -51,7 +47,7 @@ export default function errorHandler(options?: Options): ErrorRequestHandler {
       if (defaultOptions.logger) {
         await defaultOptions.logger(err);
       }
-      return res.status(err.status).json(errorBody(err));
+      return res.status(err.status).json(createErrorBody(err));
     }
 
     return next(err);

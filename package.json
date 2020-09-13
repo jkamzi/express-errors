@@ -12,9 +12,10 @@
     "typescript": "^4.0.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf build && npx tsc",
+    "test": "jest"
   },
   "keywords": [],
   "author": "Rikard Jansson",
-  "license": "ISC"
+  "license": "MIT"
 }

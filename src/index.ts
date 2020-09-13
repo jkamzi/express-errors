@@ -3,7 +3,7 @@ import UnauthorizedError from './errors/UnauthorizedError';
 import ForbiddenError from './errors/ForbiddenError';
 import NotFoundError from './errors/NotFoundError';
 
-import errorHandler from './errorHandler';
+import errorHandler, { isHttpError, createErrorBody } from './errorHandler';
 
 export {
   HttpError,
@@ -11,4 +11,6 @@ export {
   ForbiddenError,
   NotFoundError,
   errorHandler,
+  createErrorBody,
+  isHttpError,
 };

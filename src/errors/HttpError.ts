@@ -9,5 +9,6 @@ export default class HttpError extends Error {
     this.reason = reason || message;
 
     this.name = 'HttpError';
+    Object.setPrototypeOf(this, HttpError.prototype);
   }
 }

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`errorHandler errorBody() returns error object 1`] = `
+exports[`errorHandler createErrorBody() returns error object 1`] = `
 Object {
   "error": Object {
     "message": "Bad Request",

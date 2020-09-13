@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import errorHandler, { errorBody, Logger } from './errorHandler';
+import errorHandler, { createErrorBody, Logger } from './errorHandler';
 import HttpError from './errors/HttpError';
 
 describe('errorHandler', () => {
-  it('errorBody() returns error object', () => {
+  it('createErrorBody() returns error object', () => {
     expect(
-      errorBody(new HttpError(400, 'Bad Request', 'Who knows')),
+      createErrorBody(new HttpError(400, 'Bad Request', 'Who knows')),
     ).toMatchSnapshot();
   });
 
