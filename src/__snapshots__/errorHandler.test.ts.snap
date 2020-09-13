@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`errorHandler errorBody() returns error object 1`] = `
+Object {
+  "error": Object {
+    "message": "Bad Request",
+    "reason": "Who knows",
+    "status": 400,
+  },
+}
+`;
