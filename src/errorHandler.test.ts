@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import errorHandler, { createErrorBody, Logger } from './errorHandler';
+import type { Logger } from './types';
+import errorHandler, { createErrorBody } from './errorHandler';
 import HttpError from './errors/HttpError';
 
 describe('errorHandler', () => {

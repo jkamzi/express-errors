@@ -1,16 +1,6 @@
-import HttpError from './errors/HttpError';
-import UnauthorizedError from './errors/UnauthorizedError';
-import ForbiddenError from './errors/ForbiddenError';
-import NotFoundError from './errors/NotFoundError';
+export * from './errors';
+import isHttpError from './isHttpError';
+import handleErrors from './handleErrors';
+import errorHandler, { createErrorBody } from './errorHandler';
 
-import errorHandler, { isHttpError, createErrorBody } from './errorHandler';
-
-export {
-  HttpError,
-  UnauthorizedError,
-  ForbiddenError,
-  NotFoundError,
-  errorHandler,
-  createErrorBody,
-  isHttpError,
-};
+export { handleErrors, errorHandler, createErrorBody, isHttpError };

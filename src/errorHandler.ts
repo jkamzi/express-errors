@@ -1,26 +1,8 @@
-import { Request, Response, ErrorRequestHandler } from 'express';
+import { Request, Response, ErrorRequestHandler, NextFunction } from 'express';
 import HttpError from './errors/HttpError';
-import { NextFunction } from 'connect';
+import isHttpError from './isHttpError';
 
-type ErrorType = Error | HttpError;
-
-export type Logger = (err: HttpError) => Promise<void> | void;
-
-export type Options = Readonly<{
-  logger?: undefined | Logger;
-}>;
-
-export type ErrorResponse = Readonly<{
-  error: {
-    message: string;
-    reason: string;
-    status: number;
-  };
-}>;
-
-export function isHttpError(err: ErrorType): err is HttpError {
-  return (err as HttpError).reason !== undefined;
-}
+import type { ErrorType, Options, ErrorResponse } from './types';
 
 export function createErrorBody(err: HttpError): ErrorResponse {
   return {
