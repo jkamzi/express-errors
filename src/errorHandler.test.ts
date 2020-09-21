@@ -19,6 +19,30 @@ describe('errorHandler', () => {
     expect(next).toHaveBeenCalledWith(err);
   });
 
+  it('should be possible to replace error output format', () => {
+    const next = jest.fn();
+    const res: Partial<Response> = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    const err = new HttpError(400, 'Bad Request', 'Who knows');
+
+    errorHandler({
+      formatter: (err: HttpError) => ({
+        error: {
+          message: err.message,
+          stack: err.stack,
+        },
+      }),
+    })(err, {} as Request, res as Response, next);
+    expect(res.json).toHaveBeenCalledWith({
+      error: {
+        message: err.message,
+        stack: err.stack,
+      },
+    });
+  });
+
   it('should return response when error is HttpError', () => {
     const next = jest.fn();
     const res: Partial<Response> = {

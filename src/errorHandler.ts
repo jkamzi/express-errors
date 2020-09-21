@@ -2,7 +2,7 @@ import { Request, Response, ErrorRequestHandler, NextFunction } from 'express';
 import HttpError from './errors/HttpError';
 import isHttpError from './isHttpError';
 
-import type { ErrorType, Options, ErrorResponse } from './types';
+import type { Options, ErrorResponse } from './types';
 
 export function createErrorBody(err: HttpError): ErrorResponse {
   return {
@@ -29,7 +29,12 @@ export default function errorHandler(options?: Options): ErrorRequestHandler {
       if (defaultOptions.logger) {
         await defaultOptions.logger(err);
       }
-      return res.status(err.status).json(createErrorBody(err));
+
+      const response = defaultOptions.formatter
+        ? defaultOptions.formatter(err)
+        : createErrorBody(err);
+
+      return res.status(err.status).json(response);
     }
 
     return next(err);

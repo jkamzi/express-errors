@@ -6,6 +6,7 @@ export type Logger = (err: HttpError) => Promise<void> | void;
 
 export type Options = Readonly<{
   logger?: Logger;
+  formatter?: (err: HttpError) => Record<string, unknown>;
 }>;
 
 export type ErrorResponse = Readonly<{
