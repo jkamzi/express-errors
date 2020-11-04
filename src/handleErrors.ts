@@ -10,6 +10,15 @@ export type HandleErrors = {
   [key: string]: (err: Error) => HttpError;
 };
 
+/**
+ * Handle unhandled errors such as SyntaxError or errors from
+ * vendor packages.
+ *
+ * The error handler looks at the name of the error and attempt
+ * to match it to a defined error.
+ *
+ * @param errors
+ */
 export default function handleErrors(
   errors: HandleErrors,
 ): ErrorRequestHandler {

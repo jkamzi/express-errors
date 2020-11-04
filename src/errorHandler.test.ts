@@ -1,15 +1,9 @@
 import { Request, Response } from 'express';
 import type { Logger } from './types';
-import errorHandler, { createErrorBody } from './errorHandler';
+import errorHandler from './errorHandler';
 import HttpError from './errors/HttpError';
 
 describe('errorHandler', () => {
-  it('createErrorBody() returns error object', () => {
-    expect(
-      createErrorBody(new HttpError(400, 'Bad Request', 'Who knows')),
-    ).toMatchSnapshot();
-  });
-
   it('should call next() when error is not HttpError', () => {
     const next = jest.fn();
     const err = new Error('Error');

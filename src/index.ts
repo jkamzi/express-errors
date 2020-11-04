@@ -1,6 +1,16 @@
 export * from './errors';
 import isHttpError from './isHttpError';
 import handleErrors from './handleErrors';
-import errorHandler, { createErrorBody } from './errorHandler';
+import handleInternalServerError from './handleInternalServerError';
+import handleNotFoundError from './handleNotFoundError';
+import errorHandler from './errorHandler';
+import createErrorBody from './createErrorBody';
 
-export { handleErrors, errorHandler, createErrorBody, isHttpError };
+export {
+  createErrorBody,
+  errorHandler,
+  handleErrors,
+  handleInternalServerError,
+  handleNotFoundError,
+  isHttpError,
+};

@@ -1,18 +1,8 @@
 import { Request, Response, ErrorRequestHandler, NextFunction } from 'express';
 import HttpError from './errors/HttpError';
 import isHttpError from './isHttpError';
-
-import type { Options, ErrorResponse } from './types';
-
-export function createErrorBody(err: HttpError): ErrorResponse {
-  return {
-    error: {
-      message: err.message,
-      reason: err.reason,
-      status: err.status,
-    },
-  };
-}
+import createErrorBody from './createErrorBody';
+import type { Options } from './types';
 
 export default function errorHandler(options?: Options): ErrorRequestHandler {
   const defaultOptions: Options = {
