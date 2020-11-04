@@ -1,5 +1,7 @@
 # express-errors
 
+Makes error handling easy.
+
 ## Basic Example
 
 ```js
@@ -30,21 +32,140 @@ curl http://localhost:3000/
 }
 ```
 
-## Http Error Class
+## Handling third-party errors
 
-The [Http Error Class](https://github.com/jkamzi/express-errors/blob/master/src/errors/HttpError.ts) is the base class for all errors. This clas takes three paramter:
+Errors from third-party can be handled by using the `handleErrors()` function. For example [`passport`](https://github.com/jaredhanson/passport/blob/master/lib/errors/authenticationerror.js) authentication error can be handled the following way:
 
 ```js
-new HttpError(HTTP_STATUS_CODE, ERROR_MESSAGE, REASON);
+const {
+  errorHandler,
+  handleErrors,
+  UnauthorizedError,
+  HttpError,
+} = require('@jkamzi/express-errors');
+
+app.use(
+  handleErrors({
+    AuthenticationError: (err: Error) => {
+      // return new UnauthorizedError();
+      return new HttpError(
+        401,
+        'Unauthorized Error',
+        'Converted Passport Error',
+      );
+    },
+  }),
+);
+app.use(errorHandler());
 ```
 
-The third argument `REASON` is optional and can provide the user with more details.
+This would trigger the following error whenever passport throws authentication error:
 
-## Handling third-party errors
+```json
+{
+  "error": {
+    "message": "Unauthorized Error",
+    "reason": "Converted Passport Error",
+    "status": 401
+  }
+}
+```
+
+## Not Found and catch all (Internal Server Error) handler
+
+To handle `Not Found Errors` and to catch all unhandled errors the following handlers are available:
+
+```js
+const express = require('express');
+const {
+  errorHandler,
+  handleInternalServerError,
+  handleNotFoundError,
+  NotFoundError,
+} = require('@jkamzi/express-errors');
+
+const app = express();
+
+app.get('/', (req, res, next) => {
+  return next(new NotFoundError('I will never work!'));
+});
+
+app.use(errorHandler());
+app.use(handleInternalServerError(/** formatter */));
+app.use(handleNotFoundError(/** formatter */));
+
+app.listen(3000);
+```
 
 ## Formatting errors
 
-## Not Found and catch all (Internal Server Error) handler
+By default errors are returned like this:
+
+```json
+{
+  "error": {
+    "message": "ERROR MESSAGE",
+    "reason": "PROVIDED REASON",
+    "status": HTTP STATUS CODE
+  }
+}
+```
+
+This can be changed by provider a formatter.
+
+The formatter should be the following signature:
+
+```js
+/**
+ * @param error HttpError
+ */
+function formatter(error) {
+  /** */
+}
+```
+
+The formatter can be passed to `errorHandler`, `handleInternalServerError` and `handleNotFoundError`.
+
+For example:
+
+```js
+const express = require('express');
+const {
+  errorHandler,
+  handleInternalServerError,
+  handleNotFoundError,
+  NotFoundError,
+} = require('@jkamzi/express-errors');
+
+const app = express();
+
+app.get('/', (req, res, next) => {
+  return next(new NotFoundError('I will never work!'));
+});
+
+function myFormatter(error) {
+  return {
+    error: error.message,
+  };
+}
+
+app.use(errorHandler({
+  formatter: myFormatter,
+}));
+app.use(handleInternalServerError(myFormatter));
+app.use(handleNotFoundError(myFormatter);
+
+app.listen(3000);
+```
+
+Visiting http://localhost:3000:
+
+```
+curl http://localhost:3000/
+{
+  "error": 'Not Found Error'
+}
+```
 
 ## Available errors
 
