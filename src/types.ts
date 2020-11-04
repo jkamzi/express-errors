@@ -4,9 +4,11 @@ export type ErrorType = Error | HttpError;
 
 export type Logger = (err: HttpError) => Promise<void> | void;
 
+export type Formatter = (err: HttpError) => Record<string, unknown>;
+
 export type Options = Readonly<{
   logger?: Logger;
-  formatter?: (err: HttpError) => Record<string, unknown>;
+  formatter?: Formatter;
 }>;
 
 export type ErrorResponse = Readonly<{

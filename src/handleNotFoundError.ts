@@ -1,15 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
-import createErrorBody from './createErrorBody';
 import { NotFoundError } from './errors';
+import formatError from './formatError';
+import type { Formatter } from './types';
 
-export default function handleNotFoundError(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  const httpError = new NotFoundError('Not Found Error');
+export default function handleNotFoundError(formatter?: Formatter) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const httpError = new NotFoundError('Not Found Error');
 
-  const response = createErrorBody(httpError);
+    const response = formatError(httpError, formatter);
 
-  return res.status(404).json(response);
+    return res.status(404).json(response);
+  };
 }

@@ -1,14 +1,37 @@
 import { Request, Response } from 'express';
+import { HttpError } from './errors';
 import handleInternalServerError from './handleInternalServerError';
 
 describe('handleInternalServerError', () => {
-  it('should respond with 500 error', () => {
-    const res: Partial<Response> = {
+  let res: Partial<Response>;
+
+  beforeEach(() => {
+    res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
+  });
 
-    handleInternalServerError(
+  afterEach(() => {
+    res = null;
+  });
+
+  it('should format error', () => {
+    handleInternalServerError((e: HttpError) => ({
+      error: 'Internal Server Error',
+    }))(
+      new Error('Internal Server Error'),
+      {} as Request,
+      res as Response,
+      jest.fn(),
+    );
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Internal Server Error' });
+  });
+
+  it('should respond with 500 error', () => {
+    handleInternalServerError()(
       new Error('Internal Server Error'),
       {} as Request,
       res as Response,

@@ -1,7 +1,7 @@
 {
   "name": "@jkamzi/express-error",
   "version": "1.0.0",
-  "description": "",
+  "description": "Express Error Handler",
   "main": "build/index.js",
   "dependencies": {},
   "devDependencies": {
@@ -13,7 +13,8 @@
   },
   "scripts": {
     "build": "rm -rf build && npx tsc",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --collectCoverage"
   },
   "keywords": [],
   "author": "Rikard Jansson",

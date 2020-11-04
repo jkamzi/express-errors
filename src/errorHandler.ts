@@ -1,8 +1,8 @@
 import { Request, Response, ErrorRequestHandler, NextFunction } from 'express';
 import HttpError from './errors/HttpError';
 import isHttpError from './isHttpError';
-import createErrorBody from './createErrorBody';
 import type { Options } from './types';
+import formatError from './formatError';
 
 export default function errorHandler(options?: Options): ErrorRequestHandler {
   const defaultOptions: Options = {
@@ -20,9 +20,7 @@ export default function errorHandler(options?: Options): ErrorRequestHandler {
         await defaultOptions.logger(err);
       }
 
-      const response = defaultOptions.formatter
-        ? defaultOptions.formatter(err)
-        : createErrorBody(err);
+      const response = formatError(err, defaultOptions.formatter);
 
       return res.status(err.status).json(response);
     }
